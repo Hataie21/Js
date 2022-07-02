@@ -96,15 +96,17 @@ window.addEventListener('DOMContentLoaded', () => {
     const modalCloseBtn = document.querySelector('[data-close]');
 
     modalTrigger.forEach(btn => {
-        btn.addEventListener('click', () => {
-            modal.classList.add('snow');
-            modal.classList.remove('hide');
-            document.body.style.overflow = 'hidden';
-        });
+        btn.addEventListener('click', openModal);
     });
 
+    function openModal() {
+        modal.classList.add('snow');
+        modal.classList.remove('hide');
+        document.body.style.overflow = 'hidden';
+        clearInterval(modalTimerId);
+    }
 
-    function closeModal(){
+    function closeModal() {
         modal.classList.add('hide');
         modal.classList.remove('snow');
         document.body.style.overflow = '';
@@ -112,15 +114,26 @@ window.addEventListener('DOMContentLoaded', () => {
 
     modalCloseBtn.addEventListener('click', closeModal)
 
-    modal.addEventListener('click', (event) =>{
-        if(event.target === modal){
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
             closeModal();
         }
     });
 
     document.addEventListener('keydown', (e) => {
-        if (e.code === "Escape"){
+        if (e.code === "Escape") {
             closeModal();
         }
     });
+
+    const modalTimerId = setTimeout(openModal, 5000);
+
+    function snowModalByScroll() {
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+            openModal();
+            window.removeEventListener('scroll', snowModalByScroll);
+        }
+    }
+
+    window.addEventListener('scroll', snowModalByScroll);
 });
