@@ -136,4 +136,53 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('scroll', snowModalByScroll);
+
+    //slider
+
+    const slider = document.querySelectorAll('.offer__slide');
+    const nextBtn = document.querySelector('.offer__slider-next');
+    const prevBtn = document.querySelector('.offer__slider-prev');
+    const total = document.querySelector('#total');
+    const current = document.querySelector('#current')
+    let slideIndex = 1;
+
+    snowSlide(slideIndex);
+
+    if (slider.length < 20) {
+        total.textContent = `0${slider.length}`;
+    } else {
+        total.textContent = slider.length;
+    }
+
+    function snowSlide(n) {
+        if (n > slider.length) {
+            slideIndex = 1
+        }
+
+        if (n < 1) {
+            slideIndex = slider.length;
+        }
+
+        slider.forEach(item => item.style.display = 'none');
+
+        slider[slideIndex - 1].style.display = 'block';
+
+
+        if (slider.length < 20) {
+            current.textContent = `0${slideIndex}`;
+        } else {
+            current.textContent = slideIndex;
+        }
+    }
+
+    function plusSlider(n) {
+        snowSlide(slideIndex += n);
+    }
+
+    prevBtn.addEventListener('click', () => {
+        plusSlider(-1);
+    });
+    nextBtn.addEventListener('click', () => {
+        plusSlider(1);
+    });
 });
